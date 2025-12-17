@@ -20,7 +20,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Patienten</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'billList' or request.resolver_match.url_name == 'createBill' %}active fw-bold{% endif %}" href="{% url 'billList' %}">Rechnungen</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'patientList' or request.resolver_match.url_name == 'createPatient' %}active fw-bold{% endif %}" href="{% url 'patientList' %}">Patienten</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/admin">Admin</a>

@@ -13,40 +13,40 @@
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label for="{{ form.first_name.id_for_label }}" class="form-label big fw-bold">
+                        <label for="{{ form.firstName.id_for_label }}" class="form-label big fw-bold">
                             Vorname
                         </label>
 
                         <input 
                             type="text" 
-                            name="{{ form.first_name.html_name }}" 
-                            id="{{ form.first_name.id_for_label }}"
-                            value="{{ form.first_name.value|default_if_none:'' }}" 
+                            name="{{ form.firstName.html_name }}" 
+                            id="{{ form.firstName.id_for_label }}"
+                            value="{{ form.firstName.value|default_if_none:'' }}" 
                             class="form-control form-control-lg shadow-sm" 
                             placeholder="z.B. Max"
                         >
 
                         {% if form.first_name.errors %}
                             <div class="text-danger small mt-1">
-                                {{ form.first_name.errors.0 }}
+                                {{ form.firstName.errors.0 }}
                             </div>
                         {% endif %}
                     </div>
 
                     <div class="mb-3">
-                        <label for="{{ form.last_name.id_for_label }}" class="form-label fw-bold">
+                        <label for="{{ form.lastName.id_for_label }}" class="form-label fw-bold">
                             Nachname
                         </label>
                         <input 
                             type="text" 
-                            name="{{ form.last_name.html_name }}" 
-                            id="{{ form.last_name.id_for_label }}"
-                            value="{{ form.last_name.value|default_if_none:'' }}" 
+                            name="{{ form.lastName.html_name }}" 
+                            id="{{ form.lastName.id_for_label }}"
+                            value="{{ form.lastName.value|default_if_none:'' }}" 
                             class="form-control form-control-lg shadow-sm" 
                             placeholder="z.B. Mustermann"
                         >
-                        {% if form.last_name.errors %}
-                            <div class="text-danger small mt-1">{{ form.last_name.errors.0 }}</div>
+                        {% if form.lastName.errors %}
+                            <div class="text-danger small mt-1">{{ form.lastName.errors.0 }}</div>
                         {% endif %}
                     </div>
 
@@ -87,7 +87,7 @@
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{% url 'patientList' %}" class="btn btn-outline-secondary">
+                        <a href="{% url 'patientList' %}" class="btn btn-outline-secondary d-inline-flex align-items-center">
                             Abbrechen
                         </a>
                         <button type="submit" class="btn btn-success">
