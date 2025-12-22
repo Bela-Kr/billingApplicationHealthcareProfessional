@@ -1,0 +1,34 @@
+{% extends 'billing/base.html' %}
+
+{% block content %}
+<div style="padding: 20px;">
+    
+    <h1>Akte: {{ patient.vorname }} {{ patient.nachname }}</h1>
+    <p><strong>Versichertennummer:</strong></p>
+    <hr>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'createMedicalRecord' patient.id %}" style="background-color: green; color: white; padding: 10px; text-decoration: none;">
+            + Neue Behandlung eintragen
+        </a>
+    </div>
+
+    <h3>Behandlungsverlauf</h3>
+    
+    <ul>
+        {% for eintrag in patient.medical_record.all %}
+            <li style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                <strong>Datum:</strong> {{ eintrag.created_at|date:"d.m.Y H:i" }}<br>
+                <strong>Diagnose:</strong> {{ eintrag.diagnose }}<br>
+                <strong>Behandlung:</strong> {{ eintrag.behandlung }}<br>
+                {% if eintrag.notizen %}
+                    <em>Notiz: {{ eintrag.notizen }}</em>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Noch keine Einträge in der Akte vorhanden. (AC: Leere Akte)</li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

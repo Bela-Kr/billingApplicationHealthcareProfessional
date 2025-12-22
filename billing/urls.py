@@ -6,4 +6,6 @@ urlpatterns = [
     path("patients/add", views.createPatient, name="createPatient"),
     path("bills/", views.billList, name="billList"),
     path("bills/add", views.createBill, name="createBill"),
+    path("patients/<int:patient_id>/neuer-eintrag",views.createMedicalRecord, name="createMedicalRecord"),
+    path("patients/<int:pk>", views.patientDetails, name="patientDetails"),
 ]

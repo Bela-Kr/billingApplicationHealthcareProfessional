@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from .models import Patient, Bill
-from .forms import BillForm, PatientForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Patient, Bill, MedicalRecord
+from .forms import BillForm, PatientForm, MedicalRecordForm
 
 def patientList(request):
     all_patients = Patient.objects.all()
@@ -39,3 +39,24 @@ def createBill(request):
         form = BillForm()
 
     return render(request, 'billing/billForm.html', {'form': form})
+
+def createMedicalRecord(request, patient_id):
+    patient = get_object_or_404(Patient, pk=patient_id)
+
+    if request.method == "POST":
+        form = MedicalRecordForm(request.POST)
+        if form.is_valid():
+            record = form.save(commit=False)
+            record.patient = patient
+            record.save()
+
+            return redirect("patientDetails", pk = patient.id)
+    else:
+        form = MedicalRecordForm()
+        
+    return render(request, "billing/createRecord.html", {"form":form, "patient":patient})
+
+def patientDetails(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+
+    return render(request, "billing/patientDetail.html", {"patient":patient})

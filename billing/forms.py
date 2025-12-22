@@ -1,5 +1,5 @@
 from django import forms
-from .models import Patient, Bill, Service
+from .models import Patient, Bill, Service, MedicalRecord
 
 class PatientForm(forms.ModelForm):
     class Meta():
@@ -26,4 +26,19 @@ class BillForm(forms.ModelForm):
         widgets = {
             'patient': forms.Select(attrs={'class': 'form-select form-select-lg shadow-sm'}),
             'status': forms.Select(attrs={'class': 'form-select form-select-lg shadow-sm'}),
+        }
+
+class MedicalRecordForm(forms.ModelForm):
+    class Meta():
+        model = MedicalRecord
+        fields = ["diagnose", "behandlung", "notizen"]
+
+        labels = {
+            "diagnose": "(Ärztliche) Diagnose",
+            "behandlung": "Durchgeführte Behandlung",
+            "notizen": "Interne Notizen",
+        }
+
+        widgets = {
+            "notizen": forms.Textarea(attrs={'rows': 5, 'class': 'form-control'}),
         }

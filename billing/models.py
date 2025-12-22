@@ -59,4 +59,13 @@ class InvoiceItem(models.Model):
 
     def __str__(self):
         return f"{self.service.serviceName} auf {self.invoice.invoice_number}"
-    ## Hier nochmal Erklärungen s
+    ## Hier nochmal Erklärungen
+
+class MedicalRecord(models.Model):
+    # Fremdschlüssel für Patienten
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="medical_record")
+
+    diagnose = models.CharField(max_length=200, verbose_name="Diagnose")
+    behandlung = models.TextField(blank=True, verbose_name="Behandlung")
+    notizen = models.TextField(blank=True, verbose_name="Notizen")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Erstellungsdatum")

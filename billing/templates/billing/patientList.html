@@ -17,6 +17,7 @@
                     <th>Name</th>
                     <th>Adresse</th>
                     <th>Status</th>
+                    <th>Akte</th>
                     <th class="text-end">Aktion</th>
                 </tr>
             </thead>
@@ -24,10 +25,15 @@
                 {% for patient in patients %}
                 <tr>
                     <td>
-                        <strong>{{ patient.firstName }} {{ patient.lastName }}</strong><br>
+                        <strong>{{ patient.firstName }} {{ patient.lastName }}</strong><br> 
                     </td>
                     <td>{{ patient.address }}</td>
                     <td><span class="badge bg-success">Bezahlt</span></td>
+                    <td>
+                        <a href="{% url 'createMedicalRecord' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
+                            <i class="bi bi-plus-lg me-2"></i>Akte
+                        </a>
+                    </td>
                     <td class="text-end">
                         <button class="btn btn-sm btn-outline-primary">Bearbeiten</button>
                     </td>
