@@ -23,7 +23,10 @@
               <a class="nav-link {% if request.resolver_match.url_name == 'billList' or request.resolver_match.url_name == 'createBill' %}active fw-bold{% endif %}" href="{% url 'billList' %}">Rechnungen</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'patientList' or request.resolver_match.url_name == 'createPatient' %}active fw-bold{% endif %}" href="{% url 'patientList' %}">Patienten</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'patientList' or request.resolver_match.url_name == 'createPatient' or request.resolver_match.url_name == 'createMedicalRecord' or request.resolver_match.url_name == 'patientDetails' %}active fw-bold{% endif %}" href="{% url 'patientList' %}">Patienten</a>
+            </li>
+            <li>
+              <a class="nav-link {% if request.resolver_match.url_name == "serviceList" %}active fw-bold{% endif %}" href="{% url "serviceList" %}">Services</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/admin">Admin</a>

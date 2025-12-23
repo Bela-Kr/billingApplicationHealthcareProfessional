@@ -17,6 +17,7 @@ class Service(models.Model):
     serviceName = models.CharField(max_length=100, verbose_name="Leistung")
     preis = models.DecimalField(default=0, max_digits=6, decimal_places=2, verbose_name="Preis (€)")
     beschreibung = models.TextField(blank=True, verbose_name="Beschreibung")
+    abrechnungs_nr = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Abrechnungs Nummer")
 
     def __str__ (self):
         return f"{self.serviceName} ({self.preis} €)"
@@ -45,7 +46,6 @@ class Bill(models.Model):
     def getTotal(self):
         total = sum(Service.preis for Service in self.services.all())
         return total
-
     
 class InvoiceItem(models.Model):
     rechnung = models.ForeignKey(Bill, on_delete=models.CASCADE, related_name="Items")

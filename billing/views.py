@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Patient, Bill, MedicalRecord
-from .forms import BillForm, PatientForm, MedicalRecordForm
+from django.db.models import Sum, F
+from .models import Patient, Bill, MedicalRecord, Service
+from .forms import BillForm, PatientForm, MedicalRecordForm, ServiceForm
 
 def patientList(request):
     all_patients = Patient.objects.all()
@@ -25,7 +26,16 @@ def createPatient(request):
 def billList(request):
     bills = Bill.objects.all().order_by("-zahlungsDatum")
 
-    context = {"Bill":bills}
+    total_open_data = bills.filter(status="SENT").aggregate(
+        total_sum = Sum("services__preis")
+    )
+
+    open_amount = total_open_data["total_sum"] or 0
+
+    context = {
+        "Bill":bills,
+        "open_amount": open_amount,
+    }
 
     return render(request, "billing/billList.html", context)
 
@@ -60,3 +70,23 @@ def patientDetails(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
 
     return render(request, "billing/patientDetail.html", {"patient":patient})
+
+def serviceList(request):
+    services = Service.objects.all()
+
+    context = {"services":services}
+
+    return render(request, "billing/serviceList.html", context)
+
+def createService(request):
+
+    if request.method == "POST":
+        form = ServiceForm(request.POST)
+        if form.is_valid():
+            service = form.save()
+            
+            return redirect("serviceList")  
+    else:
+        form = ServiceForm()
+    
+    return render(request, "billing/createService.html", {"form": form})

@@ -17,8 +17,11 @@
                     <th>Name</th>
                     <th>Adresse</th>
                     <th>Status</th>
-                    <th>Akte</th>
-                    <th class="text-end">Aktion</th>
+                    <th class="w-auto">
+                        <div class="d-flex justify-content-center align-items-center">
+                            Akte
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -28,14 +31,13 @@
                         <strong>{{ patient.firstName }} {{ patient.lastName }}</strong><br> 
                     </td>
                     <td>{{ patient.address }}</td>
-                    <td><span class="badge bg-success">Bezahlt</span></td>
                     <td>
-                        <a href="{% url 'createMedicalRecord' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
-                            <i class="bi bi-plus-lg me-2"></i>Akte
-                        </a>
+                        <span class="badge bg-success">Bezahlt</span>
                     </td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-outline-primary">Bearbeiten</button>
+                    <td class="text-center">
+                        <a href="{% url 'patientDetails' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
+                            <i class="bi bi-folder2-open me-2"></i>Akte
+                        </a>
                     </td>
                 </tr>
                 {% empty %}

@@ -42,3 +42,19 @@ class MedicalRecordForm(forms.ModelForm):
         widgets = {
             "notizen": forms.Textarea(attrs={'rows': 5, 'class': 'form-control'}),
         }
+
+class ServiceForm(forms.ModelForm):
+    class Meta():
+        model = Service
+        fields = ["serviceName", "preis", "beschreibung", "abrechnungs_nr"]
+
+        labels = {
+            "serviceName": "Bezeichnung Service",
+            "preis": "Preis (€)",
+            "beschreibung": "Beschreibung",
+            "abrechnungs_nr": "Abrechnungs Nummer"
+        }
+
+        widgets = {
+            "beschreibung": forms.Textarea(attrs={'rows': 5, 'class': 'form-control'}),
+        }

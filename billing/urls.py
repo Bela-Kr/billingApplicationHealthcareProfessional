@@ -8,4 +8,6 @@ urlpatterns = [
     path("bills/add", views.createBill, name="createBill"),
     path("patients/<int:patient_id>/neuer-eintrag",views.createMedicalRecord, name="createMedicalRecord"),
     path("patients/<int:pk>", views.patientDetails, name="patientDetails"),
+    path("services/", views.serviceList, name="serviceList"),
+    path("services/new", views.createService, name="createService"),
 ]
