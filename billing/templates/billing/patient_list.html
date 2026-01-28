@@ -1,25 +1,27 @@
 {% extends 'billing/base.html' %}
 
 {% block content %}
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="card-title mb-0">Patientenkartei</h2>
-        <a href={% url 'createPatient' %} class="btn btn-success">
-            <i class="bi bi-person-plus"></i> Neuer Patient
+        <h2 class="card-title mb-0">Patient Files</h2>
+        <a href="{% url 'create_patient' %}" class="btn btn-success">
+            <i class="bi bi-person-plus"></i> New Patient
         </a>
     </div>
 
-    <p class="text-muted">Hier verwalten Sie alle Stammdaten Ihrer Praxis.</p>
+    <p class="text-muted">Manage your patient master data here.</p>
 
+    <!-- Patient Table -->
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
                     <th>Name</th>
-                    <th>Adresse</th>
+                    <th>Address</th>
                     <th>Status</th>
                     <th class="w-auto">
                         <div class="d-flex justify-content-center align-items-center">
-                            Akte
+                            Record
                         </div>
                     </th>
                 </tr>
@@ -28,22 +30,23 @@
                 {% for patient in patients %}
                 <tr>
                     <td>
-                        <strong>{{ patient.firstName }} {{ patient.lastName }}</strong><br> 
+                        <strong>{{ patient.first_name }} {{ patient.last_name }}</strong>
                     </td>
                     <td>{{ patient.address }}</td>
                     <td>
-                        <span class="badge bg-success">Bezahlt</span>
+                        <!-- Placeholder for future logic -->
+                        <span class="badge bg-success">Active</span>
                     </td>
                     <td class="text-center">
-                        <a href="{% url 'patientDetails' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
-                            <i class="bi bi-folder2-open me-2"></i>Akte
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
+                            <i class="bi bi-folder2-open me-2"></i> Open
                         </a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
                     <td colspan="4" class="text-center py-4">
-                        <div class="text-muted">Noch keine Patienten vorhanden.</div>
+                        <div class="text-muted">No patients found.</div>
                     </td>
                 </tr>
                 {% endfor %}

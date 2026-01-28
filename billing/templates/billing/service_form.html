@@ -7,50 +7,49 @@
         <div class="card shadow border-0 rounded-4">
             <div class="card-body p-5">
                 
-                <h2 class="mb-4 fw-bold text-secondary">Neue Leistung anlegen</h2>
-                <p class="text-muted mb-4">Erstelle einen Service, damit du ihn später auf Rechnungen auswählen kannst.</p>
+                <h2 class="mb-4 fw-bold text-secondary">Create New Service</h2>
+                <p class="text-muted mb-4">Add a service to the catalog to select it on invoices later.</p>
                 
                 <form method="post">
                     {% csrf_token %}
 
                     <div class="row">
                         <div class="col-md-8 mb-3">
-                            <label class="form-label fw-bold">Bezeichnung</label>
+                            <label class="form-label fw-bold">Service Name</label>
                             <input 
                                 type="text" 
-                                name="{{ form.serviceName.html_name }}" 
-                                value="{{ form.serviceName.value|default_if_none:'' }}" 
+                                name="{{ form.name.html_name }}" 
+                                value="{{ form.name.value|default_if_none:'' }}" 
                                 class="form-control form-control-lg shadow-sm"
-                                placeholder="z.B. Erstgespräch (50 Min)"
+                                placeholder="e.g. Initial Consultation (50 Min)"
                                 required
                             >
-                            {% if form.serviceName.errors %}
-                                <div class="text-danger small mt-1">{{ form.serviceName.errors.0 }}</div>
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
                             {% endif %}
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold">Ziffer / Nr.</label>
+                            <label class="form-label fw-bold">Billing Code</label>
                             <input 
-                                type="number" 
-                                step="0.01"
-                                name="{{ form.abrechnungs_nr.html_name }}" 
-                                value="{{ form.abrechnungs_nr.value|default_if_none:'' }}" 
+                                type="text" 
+                                name="{{ form.billing_code.html_name }}" 
+                                value="{{ form.billing_code.value|default_if_none:'' }}" 
                                 class="form-control form-control-lg shadow-sm"
-                                placeholder="z.B. 19.2"
+                                placeholder="e.g. 19.2"
                                 required
                             >
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Preis</label>
+                        <label class="form-label fw-bold">Price</label>
                         <div class="input-group shadow-sm">
                             <input 
                                 type="number" 
                                 step="0.01" 
-                                name="{{ form.preis.html_name }}" 
-                                value="{{ form.preis.value|default_if_none:'' }}" 
+                                name="{{ form.price.html_name }}" 
+                                value="{{ form.price.value|default_if_none:'' }}" 
                                 class="form-control form-control-lg border-end-0"
                                 placeholder="0.00"
                                 required
@@ -60,22 +59,22 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Beschreibung <small class="text-muted fw-normal">(Optional)</small></label>
+                        <label class="form-label fw-bold">Description <small class="text-muted fw-normal">(Optional)</small></label>
                         <textarea 
-                            name="{{ form.beschreibung.html_name }}" 
+                            name="{{ form.description.html_name }}" 
                             class="form-control shadow-sm" 
                             rows="3" 
-                            placeholder="Details, die auf der Rechnung erscheinen sollen..."
-                        >{{ form.beschreibung.value|default_if_none:'' }}</textarea>
+                            placeholder="Details that should appear on the invoice..."
+                        >{{ form.description.value|default_if_none:'' }}</textarea>
                     </div>
 
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{% url 'serviceList' %}" class="btn btn-outline-secondary">Abbrechen</a>
+                        <a href="{% url 'service_list' %}" class="btn btn-outline-secondary">Cancel</a>
                         
                         <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">
-                            <i class="bi bi-save me-2"></i>Speichern
+                            <i class="bi bi-save me-2"></i>Save Service
                         </button>
                     </div>
                 </form>

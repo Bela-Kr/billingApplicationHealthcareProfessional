@@ -1,56 +1,108 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Sum, F
-from .models import Patient, Bill, MedicalRecord, Service
-from .forms import BillForm, PatientForm, MedicalRecordForm, ServiceForm
+from decimal import Decimal
+from typing import Any, Dict
 
-def patientList(request):
+from django.db.models import Sum, F
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+
+from .models import Patient, Bill, MedicalRecord, Service
+from .forms import (
+    BillForm, 
+    PatientForm, 
+    MedicalRecordForm, 
+    ServiceForm, 
+)
+
+def patient_list(request: HttpRequest) -> HttpResponse:
+    """
+    Displays a list of all patients.
+    """
     all_patients = Patient.objects.all()
     
     context = {
         'patients': all_patients
     }
     
-    return render(request, 'billing/patientList.html', context)
+    return render(request, 'billing/patient_list.html', context)
 
-def createPatient(request):
+def create_patient(request: HttpRequest) -> HttpResponse:
+    """
+    Handles the creation of a new patient record.
+    """
     if request.method == "POST":
         form = PatientForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("patientList")
+            return redirect("patient_list")
     else:
         form = PatientForm()
 
-    return render(request, 'billing/patientForm.html', {'form': form})
+    return render(request, 'billing/patient_form.html', {'form': form})
 
-def billList(request):
-    bills = Bill.objects.all().order_by("-zahlungsDatum")
+def bill_list(request: HttpRequest) -> HttpResponse:
+    """
+    Displays a filtered list of bills and calculates the total open amount.
+    """
+    bills = Bill.objects.all().order_by("-issue_date")
 
-    total_open_data = bills.filter(status="SENT").aggregate(
-        total_sum = Sum("services__preis")
+    patient_id = request.GET.get("patient")
+    if patient_id:
+        bills = bills.filter(patient_id=patient_id)
+
+    month_input = request.GET.get("month")
+    if month_input:
+        bills = bills.filter(issue_date__month=month_input)
+
+    # Calculate total revenue from the filtered bills using database aggregation
+    total_data = bills.aggregate(
+        total_sum=Sum(F('items__price') * F('items__quantity'))
     )
 
-    open_amount = total_open_data["total_sum"] or 0
+    open_amount = total_data["total_sum"] or Decimal(0)
+    all_patients = Patient.objects.all()
 
     context = {
-        "Bill":bills,
+        "bills": bills,
         "open_amount": open_amount,
+        "patients": all_patients,
     }
 
-    return render(request, "billing/billList.html", context)
+    return render(request, "billing/bill_list.html", context)
 
-def createBill(request):
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum, F
+from decimal import Decimal
+from .models import Patient, Bill, MedicalRecord, Service, InvoiceItem
+from .forms import BillForm, PatientForm, MedicalRecordForm, ServiceForm
+
+
+def create_bill(request: HttpRequest):
     if request.method == 'POST':
         form = BillForm(request.POST)
         if form.is_valid():
-            form.save() 
-            return redirect('billList')
+            bill = form.save()
+
+            services_selected = form.cleaned_data['selected_services']
+
+            for service in services_selected:
+                InvoiceItem.objects.create(
+                    bill=bill,
+                    service=service,
+                    price=service.price, 
+                    quantity=1,
+                )
+            
+            return redirect('bill_list')
     else:
         form = BillForm()
 
-    return render(request, 'billing/billForm.html', {'form': form})
+    return render(request, 'billing/bill_form.html', {'form': form})
 
-def createMedicalRecord(request, patient_id):
+def create_medical_record(request: HttpRequest, patient_id: int) -> HttpResponse:
+    """
+    Adds a medical note/diagnosis to a specific patient.
+    """
     patient = get_object_or_404(Patient, pk=patient_id)
 
     if request.method == "POST":
@@ -59,34 +111,40 @@ def createMedicalRecord(request, patient_id):
             record = form.save(commit=False)
             record.patient = patient
             record.save()
-
-            return redirect("patientDetails", pk = patient.id)
+            return redirect("patient_detail", pk=patient.id)
     else:
         form = MedicalRecordForm()
         
-    return render(request, "billing/createRecord.html", {"form":form, "patient":patient})
+    context = {
+        "form": form,
+        "patient": patient
+    }
+    return render(request, "billing/record_form.html", context)
 
-def patientDetails(request, pk):
+def patient_detail(request: HttpRequest, pk: int) -> HttpResponse:
+    """
+    Shows detailed information for a specific patient.
+    """
     patient = get_object_or_404(Patient, pk=pk)
+    return render(request, "billing/patient_detail.html", {"patient": patient})
 
-    return render(request, "billing/patientDetail.html", {"patient":patient})
-
-def serviceList(request):
+def service_list(request: HttpRequest) -> HttpResponse:
+    """
+    Displays the catalog of available services/products.
+    """
     services = Service.objects.all()
+    return render(request, "billing/service_list.html", {"services": services})
 
-    context = {"services":services}
-
-    return render(request, "billing/serviceList.html", context)
-
-def createService(request):
-
+def create_service(request: HttpRequest) -> HttpResponse:
+    """
+    Adds a new item to the service catalog.
+    """
     if request.method == "POST":
         form = ServiceForm(request.POST)
         if form.is_valid():
-            service = form.save()
-            
-            return redirect("serviceList")  
+            form.save()
+            return redirect("service_list")  
     else:
         form = ServiceForm()
     
-    return render(request, "billing/createService.html", {"form": form})
+    return render(request, "billing/service_form.html", {"form": form})
