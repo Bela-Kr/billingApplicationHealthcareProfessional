@@ -11,7 +11,7 @@ Independent therapists often lose up to 4 hours per week on manual invoicing usi
 **Billy** is a Django-based web application designed to digitize and automate the billing workflow. It bridges the gap between patient data and financial records.
 
 <img src="/billing/assets/screen_shots/Screenshot 2026-01-29 at 13.41.12.png">
-<img src="/billing/assets/screen_shots/Screenshot 2026-01-29 at 13.41.12.png">
+<img src="/billing/assets/screen_shots/Screenshot 2026-01-29 at 13.36.34.png">
 
 **Key Features:**
 * **Service Catalog:** Centralized management of treatments and prices to ensure consistency.
