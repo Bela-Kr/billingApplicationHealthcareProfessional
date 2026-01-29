@@ -9,7 +9,7 @@
                 
                 <div class="d-flex justify-content-between align-items-start mb-4">
                     <div>
-                        <h6 class="text-uppercase text-muted fw-bold mb-2">Patient File</h6>
+                        <h6 class="text-uppercase text-muted fw-bold mb-2">Patientenakte</h6>
                         <h1 class="fw-bold text-primary mb-1">
                             {{ patient.first_name }} {{ patient.last_name }}
                         </h1>
@@ -20,13 +20,13 @@
                     </div>
 
                     <a href="{% url 'create_medical_record' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 fw-bold">
-                        <i class="bi bi-plus-lg me-2"></i>New Treatment
+                        <i class="bi bi-plus-lg me-2"></i>Neue Behandlung
                     </a>
                 </div>
 
                 <hr class="my-4">
 
-                <h4 class="fw-bold text-secondary mb-4">Medical History</h4>
+                <h4 class="fw-bold text-secondary mb-4">Anamnese</h4>
 
                 <div class="vstack gap-3">
                     {% for record in patient.medical_records.all|dictsortreversed:"created_at" %}
@@ -54,7 +54,7 @@
 
                                 {% if record.notes %}
                                     <div class="mt-3 p-3 bg-white border rounded-3 text-muted fst-italic small">
-                                        <i class="bi bi-sticky me-1"></i> Note: {{ record.notes }}
+                                        <i class="bi bi-sticky me-1"></i> Notiz: {{ record.notes }}
                                     </div>
                                 {% endif %}
                             </div>
@@ -63,8 +63,8 @@
                     {% empty %}
                         <div class="text-center py-5 text-muted border rounded-3 bg-light bg-opacity-50 dashed-border">
                             <i class="bi bi-folder2-open fs-1 d-block mb-3 opacity-50"></i>
-                            <p class="mb-0 fw-bold">No records found.</p>
-                            <small>Start a new treatment using the button above.</small>
+                            <p class="mb-0 fw-bold">Keine einträge gefunden.</p>
+                            <small>Erstellen Sie einen neuen Akteneintrag.</small>
                         </div>
                     {% endfor %}
                 </div>

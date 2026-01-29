@@ -26,14 +26,14 @@
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name in 'bill_list,bill_form' %}active fw-bold{% endif %}" 
                  href="{% url 'bill_list' %}">
-                 Invoices
+                 Rechnungen
               </a>
             </li>
 
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name in 'patient_list,patient_form,patient_detail,record_form' %}active fw-bold{% endif %}" 
                  href="{% url 'patient_list' %}">
-                 Patients
+                 Patienten
               </a>
             </li>
 
