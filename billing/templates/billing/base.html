@@ -1,48 +1,63 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Billy - Praxisverwaltung</title>
+    <title>Billy - Practice Management</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   </head>
   <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
       <div class="container">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-activity"></i> Billy
+        <a class="navbar-brand fw-bold" href="{% url 'patient_list' %}">
+            <i class="bi bi-activity me-1"></i> Billy
         </a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'billList' or request.resolver_match.url_name == 'createBill' %}active fw-bold{% endif %}" href="{% url 'billList' %}">Rechnungen</a>
+              <a class="nav-link {% if request.resolver_match.url_name in 'bill_list,bill_form' %}active fw-bold{% endif %}" 
+                 href="{% url 'bill_list' %}">
+                 Invoices
+              </a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'patientList' or request.resolver_match.url_name == 'createPatient' or request.resolver_match.url_name == 'createMedicalRecord' or request.resolver_match.url_name == 'patientDetails' %}active fw-bold{% endif %}" href="{% url 'patientList' %}">Patienten</a>
+              <a class="nav-link {% if request.resolver_match.url_name in 'patient_list,patient_form,patient_detail,record_form' %}active fw-bold{% endif %}" 
+                 href="{% url 'patient_list' %}">
+                 Patients
+              </a>
             </li>
-            <li>
-              <a class="nav-link {% if request.resolver_match.url_name == "serviceList" %}active fw-bold{% endif %}" href="{% url "serviceList" %}">Services</a>
-            </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="/admin">Admin</a>
+              <a class="nav-link {% if request.resolver_match.url_name in 'service_list,create_service' %}active fw-bold{% endif %}" 
+                 href="{% url 'service_list' %}">
+                 Services
+              </a>
             </li>
+
+            <li class="nav-item ms-lg-3">
+              <a class="nav-link" href="/admin">
+                  <i class="bi bi-gear-fill"></i> Admin
+              </a>
+            </li>
+
           </ul>
         </div>
       </div>
     </nav>
 
     <div class="container">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
+        {% block content %}
+        {% endblock %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

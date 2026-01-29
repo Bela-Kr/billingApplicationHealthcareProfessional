@@ -1,56 +1,50 @@
 {% extends 'billing/base.html' %}
 
 {% block content %}
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="card-title mb-0">Patient Files</h2>
-        <a href="{% url 'create_patient' %}" class="btn btn-success">
-            <i class="bi bi-person-plus"></i> New Patient
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-secondary fw-bold">Patientenübersicht</h3>
+        
+        <a href="{% url 'create_patient' %}" class="btn btn-primary shadow-sm rounded-pill px-4">
+            <i class="bi bi-plus-lg me-2"></i>Neuer Patient
         </a>
     </div>
 
-    <p class="text-muted">Manage your patient master data here.</p>
-
     <!-- Patient Table -->
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Status</th>
-                    <th class="w-auto">
-                        <div class="d-flex justify-content-center align-items-center">
-                            Record
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for patient in patients %}
-                <tr>
-                    <td>
-                        <strong>{{ patient.first_name }} {{ patient.last_name }}</strong>
-                    </td>
-                    <td>{{ patient.address }}</td>
-                    <td>
-                        <!-- Placeholder for future logic -->
-                        <span class="badge bg-success">Active</span>
-                    </td>
-                    <td class="text-center">
-                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
-                            <i class="bi bi-folder2-open me-2"></i> Open
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="text-center py-4">
-                        <div class="text-muted">No patients found.</div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+   <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-white bg-primary py-3 ps-4">Name</th>
+                            <th class="text-white bg-primary py-3">Addresse</th>
+                            <th class="text-white bg-primary py-3 text-end pe-4">Akte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td class="ps-4">
+                                <strong>{{ patient.first_name }} {{ patient.last_name }}</strong>
+                            </td>
+                            <td>{{ patient.address }}</td>
+                            <td class="text-end">
+                                <a href="{% url 'patient_detail' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 btn-sm">
+                                    <i class="bi bi-folder2-open me-2"></i> Öffnen
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4">
+                                <div class="text-muted">Keine Patienten gefunden.</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

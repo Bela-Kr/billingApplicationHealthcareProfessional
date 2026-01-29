@@ -116,7 +116,7 @@ class Bill(models.Model):
     )
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ["-issue_date"]
 
     def __str__(self) -> str:
         return f"Invoice {self.invoice_number} ({self.patient})"

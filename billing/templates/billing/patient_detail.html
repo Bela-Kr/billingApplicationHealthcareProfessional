@@ -1,34 +1,77 @@
 {% extends 'billing/base.html' %}
 
 {% block content %}
-<div style="padding: 20px;">
-    
-    <h1>Akte: {{ patient.firstName }} {{ patient.lastName }}</h1>
-    <p><strong>Versichertennummer:</strong></p>
-    <hr>
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-5">
+                
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h6 class="text-uppercase text-muted fw-bold mb-2">Patient File</h6>
+                        <h1 class="fw-bold text-primary mb-1">
+                            {{ patient.first_name }} {{ patient.last_name }}
+                        </h1>
+                        <p class="text-muted">
+                            <i class="bi bi-envelope me-1"></i> 
+                            {{ patient.email|default:"No email provided" }}
+                        </p>
+                    </div>
 
-    <div style="margin-bottom: 20px;">
-        <a href="{% url 'createMedicalRecord' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4">
-            <i class="bi bi-plus-lg me-2"></i>Neue Behandlung 
-        </a>
+                    <a href="{% url 'create_medical_record' patient.id %}" class="btn btn-primary shadow-sm rounded-pill px-4 fw-bold">
+                        <i class="bi bi-plus-lg me-2"></i>New Treatment
+                    </a>
+                </div>
+
+                <hr class="my-4">
+
+                <h4 class="fw-bold text-secondary mb-4">Medical History</h4>
+
+                <div class="vstack gap-3">
+                    {% for record in patient.medical_records.all|dictsortreversed:"created_at" %}
+                        
+                        <div class="card border bg-light bg-opacity-25 rounded-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="fw-bold mb-0 text-dark">
+                                        {{ record.diagnosis }}
+                                    </h5>
+                                    <small class="text-muted fw-bold">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        {{ record.created_at|date:"d.m.Y H:i" }}
+                                    </small>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10">
+                                        Treatment
+                                    </span>
+                                    <span class="ms-2 text-dark">
+                                        {{ record.treatment }}
+                                    </span>
+                                </div>
+
+                                {% if record.notes %}
+                                    <div class="mt-3 p-3 bg-white border rounded-3 text-muted fst-italic small">
+                                        <i class="bi bi-sticky me-1"></i> Note: {{ record.notes }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    {% empty %}
+                        <div class="text-center py-5 text-muted border rounded-3 bg-light bg-opacity-50 dashed-border">
+                            <i class="bi bi-folder2-open fs-1 d-block mb-3 opacity-50"></i>
+                            <p class="mb-0 fw-bold">No records found.</p>
+                            <small>Start a new treatment using the button above.</small>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
     </div>
-
-    <h3>Behandlungsverlauf</h3>
-    
-    <ul>
-        {% for eintrag in patient.medical_record.all|dictsortreversed:"created_at" %}
-            <li style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-                <strong>Datum:</strong> {{ eintrag.created_at|date:"d.m.Y H:i" }}<br>
-                <strong>Diagnose:</strong> {{ eintrag.diagnose }}<br>
-                <strong>Behandlung:</strong> {{ eintrag.behandlung }}<br>
-                {% if eintrag.notizen %}
-                    <em>Notiz: {{ eintrag.notizen }}</em>
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>Noch keine Einträge in der Akte vorhanden. (AC: Leere Akte)</li>
-        {% endfor %}
-    </ul>
-
 </div>
 {% endblock %}

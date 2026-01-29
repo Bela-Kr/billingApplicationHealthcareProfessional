@@ -1,25 +1,26 @@
 """
-URL configuration for config project.
+Main URL configuration for the project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+This file acts as the central entry point for routing. It:
+1. Routes admin requests to the Django Admin interface.
+2. Includes the URL patterns from the 'billing' application.
+3. Redirects the root URL ('/') to the patient list.
 """
+
 from django.contrib import admin
+from django.urls import include, path
 from django.views.generic import RedirectView
-from django.urls import path, include
 
 urlpatterns = [
+    # Admin Interface
     path("admin/", admin.site.urls),
-    path("billing/", include("billing.urls")),
-    path("", RedirectView.as_view(pattern_name="patientList"), name="root")
+
+    # Include urls from the billing app
+    # All URLs in billing/urls.py will be prefixed with 'billing/' (e.g., /billing/patients/)
+    path("", include("billing.urls")),
+
+    # Root Redirect
+    # When a user visits the homepage ('/'), redirect them to the patient list.
+    # Note: 'patient_list' must match the name='patient_list' defined in billing/urls.py
+    path("", RedirectView.as_view(pattern_name="patient_list"), name="root"),
 ]
